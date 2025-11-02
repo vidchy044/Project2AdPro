@@ -6,13 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import se233.project2.Launcher;
-import se233.project2.view.GameStage1;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
@@ -20,12 +18,11 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import se233.project2.view.GameStage2;
 import se233.project2.view.GameStageBase;
 
 
 
-public class GameCharacter1 extends Pane {
+public class GameCharacter extends Pane {
     private se233.project2.view.GameStageBase gameStage;
     private Image characterImg;
     private AnimatedSprite imageView;
@@ -68,7 +65,7 @@ public class GameCharacter1 extends Pane {
     private boolean onGround;
     private double moveSpeed = 7;
 
-    public GameCharacter1(GameStageBase gameStage, int id, int x, int y, String imgName,
+    public GameCharacter(GameStageBase gameStage, int id, int x, int y, String imgName,
                           int count, int column, int row, int width, int height,
                           KeyCode leftKey, KeyCode rightKey, KeyCode upKey,
                           KeyCode spaceKey, KeyCode downKey) {
@@ -135,21 +132,6 @@ public class GameCharacter1 extends Pane {
         });
     }
 
-//    public void stopProne() {
-//        if (imageView != crawlingSprite && imageView != crawlingShootingSprite) return;
-//        Platform.runLater(() -> {
-//            double heightDiff = (characterHeight * 1.2) - (characterHeight * 0.5);
-//            y -= heightDiff;
-//            setTranslateY(y);
-//            AnimatedSprite runningSprite = new AnimatedSprite(characterImg, 6, 6, 1, 0, 0, characterWidth, characterHeight);
-//            runningSprite.setFitWidth((int) (characterWidth * 1.2));
-//            runningSprite.setFitHeight((int) (characterHeight * 1.2));
-//            imageView = runningSprite;
-//            this.getChildren().clear();
-//            this.getChildren().add(imageView);
-//            imageView.tick();
-//        });
-//    }
 
     // แก้ stopProne() ให้ y ถูกต้อง
     public void stopProne() {
@@ -310,43 +292,6 @@ public class GameCharacter1 extends Pane {
         }
     }
 
-//    public void applyGravity() {
-//        onGround = false; // เริ่ม assume ว่าไม่ได้อยู่บนพื้น
-//
-//        // ตรวจ platform ทุกตัว
-//        for (PlatformG platform : ((GameStage1)gameStage).getPlatforms()) {
-//            double top = platform.getTopY();
-//            double left = platform.getLeftX();
-//            double right = platform.getRightX();
-//
-//            // ถ้าอยู่เหนือ platform และกำลังตกลงมา
-//            if (y + characterHeight <= top && y + characterHeight + velocityY >= top) {
-//                if (x + characterWidth > left && x < right) {
-//                    y = (int)top - characterHeight; // วางบน platform
-//                    velocityY = 0;
-//                    onGround = true;
-//                }
-//            }
-//        }
-//
-//        // ถ้าไม่ได้อยู่บน platform ให้ตกตามแรงโน้มถ่วง
-//        if (!onGround) {
-//            velocityY += gravity; // เพิ่มความเร็วตก
-//            if (velocityY > maxFallSpeed) velocityY = maxFallSpeed; // จำกัดความเร็วตก
-//            y += velocityY;
-//
-//            // ตรวจพื้น stage
-//            if (y + characterHeight >= GameStage1.GROUND) {
-//                y = GameStage1.GROUND - characterHeight;
-//                velocityY = 0;
-//                onGround = true;
-//            }
-//        }
-//
-//        // อัปเดตตำแหน่ง Pane
-//        setTranslateY(y);
-//    }
-// applyGravity ใช้ gameStage.getPlatforms() แทน cast เป็น GameStage1
 public void applyGravity() {
     onGround = false;
 
@@ -519,7 +464,5 @@ public void applyGravity() {
         // ให้ระบบแรงโน้มถ่วง handle พื้น (เรียกใช้ applyGravity)
         applyGravity();
     }
-
-
 
 }

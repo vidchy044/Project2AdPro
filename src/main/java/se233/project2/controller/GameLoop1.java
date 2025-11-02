@@ -3,29 +3,25 @@ package se233.project2.controller;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import se233.project2.model.*;
-import se233.project2.view.GameStage1;
 import se233.project2.view.GameStageBase;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class GameLoop1 implements Runnable {
+public class GameLoop implements Runnable {
     //private GameStage1 gameStage;
     private GameStageBase gameStage;
     private int frameRate = 10;
     private float interval = 1000.0f / frameRate;
     private boolean running = true;
 
-
-
-    public GameLoop1(GameStageBase gameStage) {
+    public GameLoop(GameStageBase gameStage) {
     this.gameStage = gameStage;
 }
 
 
-private void update(List<GameCharacter1> gameCharacterList) {
-        for (GameCharacter1 gameCharacter : gameCharacterList) {
+private void update(List<GameCharacter> gameCharacterList) {
+        for (GameCharacter gameCharacter : gameCharacterList) {
             boolean leftPressed = gameStage.getKeys().isPressed(gameCharacter.getLeftKey());
             boolean rightPressed = gameStage.getKeys().isPressed(gameCharacter.getRightKey());
             boolean upPressed = gameStage.getKeys().isPressed(gameCharacter.getUpKey());
@@ -70,10 +66,10 @@ private void update(List<GameCharacter1> gameCharacterList) {
 //                });
 //            }
             // ตลคไปฉากต่อไป (เฉพาะเมื่อบอสตายแล้วใน Stage 1)
-            if (gameCharacter.getX() + gameCharacter.getCharacterWidth() >= GameStage1.WIDTH - 5) {
+            if (gameCharacter.getX() + gameCharacter.getCharacterWidth() >= GameStage.WIDTH - 5) {
                 boolean canExit = true;
-                if (gameStage instanceof se233.project2.view.GameStage1) {
-                    se233.project2.view.GameStage1 gs1 = (se233.project2.view.GameStage1) gameStage;
+                if (gameStage instanceof se233.project2.view.GameStage) {
+                    se233.project2.view.GameStage gs1 = (se233.project2.view.GameStage) gameStage;
                     canExit = gs1.isBossDefeated(); // ต้องให้บอสตายก่อน จึงจะไปต่อได้
                 }
                 if (canExit) {
@@ -99,10 +95,10 @@ private void update(List<GameCharacter1> gameCharacterList) {
     }
 
 
-    private void checkBulletHitBoss(List<GameCharacter1> players, List<? extends Boss1> bosses) {
-        for (Boss1 boss : bosses) {
+    private void checkBulletHitBoss(List<GameCharacter> players, List<? extends Boss> bosses) {
+        for (BossBase boss : bosses) {
             if (!boss.isAlive()) continue;
-            for (GameCharacter1 player : players) {
+            for (GameCharacter player : players) {
                 Iterator<Bullet> iterator = player.getBullets().iterator();
                 while (iterator.hasNext()) {
                     Bullet bullet = iterator.next();
@@ -118,8 +114,8 @@ private void update(List<GameCharacter1> gameCharacterList) {
                         if (boss.getHealth() <= 0) {
                             // ไม่ข้ามฉากทันที ปล่อยให้ flow ไปตามเงื่อนไข 'เดินชนขอบเมื่อบอสตายแล้ว'
                             boolean playerAtExit = false;
-                            for (GameCharacter1 p : players) {
-                                if (p.getX() + p.getCharacterWidth() >= GameStage1.WIDTH - 5) {
+                            for (GameCharacter p : players) {
+                                if (p.getX() + p.getCharacterWidth() >= GameStage.WIDTH - 5) {
                                     playerAtExit = true;
                                     break;
                                 }
@@ -138,11 +134,11 @@ private void update(List<GameCharacter1> gameCharacterList) {
     }
 
 
-    private void checkBossBulletHitPlayer(List<? extends Boss1> bosses, List<GameCharacter1> players) {
-        for (Boss1 boss : bosses) {
+    private void checkBossBulletHitPlayer(List<? extends Boss> bosses, List<GameCharacter> players) {
+        for (Boss boss : bosses) {
             if (!boss.isAlive()) continue;
 
-            for (GameCharacter1 player : players) {
+            for (GameCharacter player : players) {
                 Iterator<Boss1Bullet> iterator = boss.bossBullets.iterator();
                 while (iterator.hasNext()) {
                     Boss1Bullet bullet = iterator.next();
@@ -171,7 +167,7 @@ private void update(List<GameCharacter1> gameCharacterList) {
 
     //เพิ่มฟังก์ชันนี้เพื่อตรวจว่า player เดินชน boss หรือไม่
 //    private void checkPlayerBossCollision(List<GameCharacter1> players, List<Boss1> bosses) {
-    private void checkPlayerBossCollision(List<GameCharacter1> players, List<? extends Boss1> bosses) {
+    private void checkPlayerBossCollision(List<GameCharacter> players, List<? extends Boss1> bosses) {
         for (GameCharacter1 player : players) {
             for (Boss1 boss : bosses) {
                 // ตรวจสอบขอบเขตซ้อนกัน
@@ -191,29 +187,7 @@ private void update(List<GameCharacter1> gameCharacterList) {
             }
         }
     }
-//
-//    @Override
-//    public void run() {
-//        while (running) {
-//            long start = System.currentTimeMillis();
-//
-//            update(gameStage.getGameCharacterList());
-////            updateBoss1Bullets(gameStage.getBossList()); // อัปเดตการเคลื่อนที่ของกระสุนของ Boss1
-////            checkBulletHitBoss(gameStage.getGameCharacterList(), gameStage.getBossList());
-////            checkPlayerBossCollision(gameStage.getGameCharacterList(), gameStage.getBossList()); // ✅ เรียกที่นี่
-//            updateBoss1Bullets((List<? extends Boss1>) gameStage.getBossList());
-//            checkBulletHitBoss(gameStage.getGameCharacterList(), (List<? extends Boss1>) gameStage.getBossList());
-//            checkPlayerBossCollision(gameStage.getGameCharacterList(), (List<? extends Boss1>) gameStage.getBossList());
-//            checkBossBulletHitPlayer(gameStage.getBossList(), gameStage.getGameCharacterList());
-//
-//            long elapsed = System.currentTimeMillis() - start;
-//            if (elapsed < interval) {
-//                try {
-//                    Thread.sleep((long) (interval - elapsed));
-//                } catch (InterruptedException ignored) {}
-//            }
-//        }
-//    }
+
 
 private void checkBulletHitMinion(List<GameCharacter1> players, List<Minion1> minions) {
     for (Minion1 minion : minions) {
@@ -235,46 +209,6 @@ private void checkBulletHitMinion(List<GameCharacter1> players, List<Minion1> mi
         }
     }
 }
-    // ✅ อัปเดตให้ตรวจสอบ minion ก่อนยิง boss ได้
-    private void checkBulletHitBossAndMin1(List<GameCharacter1> players,
-                                           List<? extends Boss1> bosses,
-                                           List<Minion1> minions) {
-        // ถ้ายังมี minion อยู่ → ห้ามยิงโดน boss
-        boolean allMinionsDefeated = minions.stream().noneMatch(Minion1::isAlive);
-        if (!allMinionsDefeated) return;
-
-
-        for (Boss1 boss : bosses) {
-            if (!boss.isAlive()) continue;
-            for (GameCharacter1 player : players) {
-                Iterator<Bullet> iterator = player.getBullets().iterator();
-                while (iterator.hasNext()) {
-                    Bullet bullet = iterator.next();
-                    if (bullet.getBoundsInParent().intersects(boss.getBoundsInParent())) {
-                        boss.takeDamage(10);
-                        iterator.remove();
-                        Platform.runLater(() -> gameStage.getBulletsLayer().getChildren().remove(bullet));
-
-
-                        if (boss.getHealth() <= 0) {
-                            boolean playerAtExit = false;
-                            for (GameCharacter1 p : players) {
-                                if (p.getX() + p.getCharacterWidth() >= GameStage1.WIDTH - 5) {
-                                    playerAtExit = true;
-                                    break;
-                                }
-                            }
-                            if (playerAtExit) {
-                                Platform.runLater(() -> gameStage.goToNextStage());
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
 
     @Override
     public void run() {

@@ -93,8 +93,6 @@ import javafx.stage.Stage;
 import se233.project2.controller.DrawingLoop1;
 import se233.project2.controller.GameLoop1;
 import se233.project2.model.AnimatedSprite;
-import se233.project2.view.GameStage1;
-import se233.project2.view.GameStage2;
 import javafx.scene.text.Font;
 
 

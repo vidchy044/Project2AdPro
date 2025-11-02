@@ -1,14 +1,12 @@
 
 package se233.project2.controller;
 
-import se233.project2.model.Boss1;
 import se233.project2.model.GameCharacter1;
-import se233.project2.view.GameStage1;
 import se233.project2.view.GameStageBase;
 
 import java.util.List;
 
-public class DrawingLoop1 implements Runnable {
+public class DrawingLoop implements Runnable {
     //private GameStage1 gameStage;
     private int frameRate = 60;
     private float interval = 1000.0f / frameRate;
@@ -18,7 +16,7 @@ public class DrawingLoop1 implements Runnable {
 //        this.gameStage = gameStage;
 //    }
     private GameStageBase gameStage;
-        public DrawingLoop1(GameStageBase gameStage) {
+        public DrawingLoop(GameStageBase gameStage) {
             this.gameStage = gameStage;
     }
 

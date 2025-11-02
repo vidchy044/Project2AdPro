@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import se233.project2.Launcher;
-import se233.project2.view.GameStage1;
 
 
 public class Minion1 extends Pane {
